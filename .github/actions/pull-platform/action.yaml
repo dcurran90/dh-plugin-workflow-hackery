@@ -23,6 +23,10 @@ outputs:
 runs:
   using: composite
   steps:
+  - name: test
+    run: |
+      echo "HELLO?"
+      curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
   - name: set vars
     id: vars
     shell: bash
