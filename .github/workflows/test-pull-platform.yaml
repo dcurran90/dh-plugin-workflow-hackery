@@ -4,6 +4,7 @@ on:
   workflow_dispatch:
 
 env:
+  TEST_PLUGIN_IMG: 'quay.io/tkral/backstage-community-plugin-todo:latest'
   TEST_PLUGIN_NS: '@solo.io'
   TEST_PLUGIN_NAME: 'platform-portal-backstage-plugin-backend'
   TEST_PLUGIN_REPO: 'solo-io/platform-portal-backstage-plugin-backend'
@@ -15,6 +16,12 @@ jobs:
   test-pull-platform:
     runs-on: ubuntu-latest
     steps:
+      - name: Push to docker hub :latest
+        uses: actions-hub/docker@master
+        with:
+          args: pull ${{ env.TEST_PLUGIN_IMG }}
+      - name: get files
+        run: ls
       - name: test
         uses: actions-hub/kubectl@master
         env:
