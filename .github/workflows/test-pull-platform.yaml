@@ -20,7 +20,7 @@ jobs:
         env:
           KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
         with:
-          args: whoami
+          args: --help
       - name: install os deps
         run: |
           sudo apt install g++ -y
