@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 env:
-  TEST_PLUGIN_IMG: 'quay.io/tkral/backstage-community-plugin-todo:latest'
+  TEST_PLUGIN_IMG: 'quay.io/tkral/backstage-community-plugin-todo'
   TEST_PLUGIN_NS: '@solo.io'
   TEST_PLUGIN_NAME: 'platform-portal-backstage-plugin-backend'
   TEST_PLUGIN_REPO: 'solo-io/platform-portal-backstage-plugin-backend'
@@ -16,10 +16,21 @@ jobs:
   test-pull-platform:
     runs-on: ubuntu-latest
     steps:
-      - name: Push to docker hub :latest
+      - name: Login to github registry
+        uses: actions-hub/docker/login@master
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          DOCKER_REGISTRY_URL: quay.io
+
+      - name: Build :latest
+        if: success()
+        run: docker build -t docker.pkg.github.com/${{ github.repository }}/app:latest .
+
+      - name: Pull plugin repo from quay :latest
         uses: actions-hub/docker@master
         with:
-          args: pull ${{ env.TEST_PLUGIN_IMG }}
+          args: pull ${{ env.TEST_PLUGIN_IMG }}:v0.1.1
       - name: get files
         run: ls
       - name: test
