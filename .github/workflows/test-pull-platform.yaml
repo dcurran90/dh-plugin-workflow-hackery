@@ -25,7 +25,16 @@ jobs:
       - name: Pull plugin repo from quay
         uses: actions-hub/docker@master
         with:
-          args: pull ${{ env.TEST_PLUGIN_IMG }}:v0.1.1
+          args: create --name=plugin-tmp ${{ env.TEST_PLUGIN_IMG }}:v0.1.1
+      - name: Pull plugin repo from quay
+        uses: actions-hub/docker@master
+        with:
+          args: cp plugin-tmp:/ .
+
+      # - name: Pull plugin repo from quay
+      #   uses: actions-hub/docker@master
+      #   with:
+      #     args: run ${{ env.TEST_PLUGIN_IMG }}:v0.1.1 
       - name: get files
         run: ls
       - name: test
