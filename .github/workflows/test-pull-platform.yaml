@@ -25,8 +25,8 @@ jobs:
       - name: Pull plugin repo from quay
         uses: actions-hub/docker@master
         with:
-          args: create --name=plugin-tmp ${{ env.TEST_PLUGIN_IMG }}:v0.1.1
-      - name: Pull plugin repo from quay
+          args: create --name=plugin-tmp ${{ env.TEST_PLUGIN_IMG }}:v0.1.1 /bin/sh
+      - name: Copy files form image
         uses: actions-hub/docker@master
         with:
           args: cp plugin-tmp:/ .
