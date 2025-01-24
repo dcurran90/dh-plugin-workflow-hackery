@@ -45,36 +45,36 @@ jobs:
           args: get pods
       - name: install os deps
         run: |
-          apt install g++ -y 
+          sudo apt install g++ -y 
           curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null
-          apt-get install apt-transport-https --yes
+          sudo apt-get install apt-transport-https --yes
           echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
-          apt-get updat
-          apt-get install helm
+          sudo apt-get updat
+          sudo apt-get install helm
 
 
 
-      - name: run helm install
-        run: helm list
-        env:
-          KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
-
-      # - name: 'Deploy'
-      #   uses: 'deliverybot/helm@v1'
-      #   with:
-      #     release: 'RHDH'
-      #     # namespace: 'default'
-      #     chart: 'openshift-helm-charts/redhat-developer-hub'
-      #     token: '${{ github.token }}'
-      #     values: |
-      #       name: foobar
-      #     value-files: >-
-      #       [
-      #         "rdhd-helm-values.yaml", 
-      #         "values.production.yaml"
-      #       ]
+      # - name: run helm install
+      #   run: helm list
       #   env:
-      #     KUBECONFIG_FILE: '${{ secrets.KUBE_CONFIG }}'
+      #     KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+
+      - name: 'Deploy'
+        uses: 'deliverybot/helm@v1'
+        with:
+          release: 'RHDH'
+          # namespace: 'default'
+          chart: 'openshift-helm-charts/redhat-developer-hub'
+          token: '${{ github.token }}'
+          values: |
+            name: foobar
+          value-files: >-
+            [
+              "rdhd-helm-values.yaml", 
+              "values.production.yaml"
+            ]
+        env:
+          KUBECONFIG_FILE: '${{ secrets.KUBE_CONFIG }}'
 
 
 
