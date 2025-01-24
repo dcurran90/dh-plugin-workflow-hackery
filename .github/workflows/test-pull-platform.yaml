@@ -50,6 +50,8 @@ jobs:
 
       - name: run helm install
         run: helm list
+        env:
+          KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
 
       # - name: 'Deploy'
       #   uses: 'deliverybot/helm@v1'
