@@ -48,8 +48,8 @@ jobs:
           sudo apt install g++ -y
 
 
-      - name: run helm install
-        run: helm install redhat-developer-hub --values rhdh-helm-values.yaml openshift-helm-charts/redhat-developer-hub
+      # - name: run helm install
+      #   run: helm install redhat-developer-hub --values rhdh-helm-values.yaml openshift-helm-charts/redhat-developer-hub
       
 
       - name: 'Deploy'
