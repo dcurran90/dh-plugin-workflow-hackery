@@ -46,47 +46,72 @@ jobs:
       - name: install os deps
         run: |
           sudo apt install g++ -y
-      - name: pull relevant platform
-        id: pull-platform
-        uses: komish/dh-plugin-workflow-hackery/.github/actions/pull-platform@main
+
+
+      - name: run helm install
+        run: helm install redhat-developer-hub --values rhdh-helm-values.yaml openshift-helm-charts/redhat-developer-hub
+      
+
+      - name: 'Deploy'
+        uses: 'deliverybot/helm@v1'
         with:
-          token: ${{ github.token }}
-      - name: setup node
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: 'platform/.nvmrc'
-      - name: install platform deps
-        working-directory: ${{ steps.pull-platform.outputs.platform-content-dir }}
-        run: |
-          yarn install \
-            --frozen-lockfile
-      - name: pull plugin repo
-        uses: actions/checkout@v4
-        with:
-          repository: ${{ env.TEST_PLUGIN_REPO }}
-          ref: ${{ env.TEST_PLUGIN_REPO_REF }}
-          path: ${{ env.TEST_PLUGIN_LOCAL_DIR }}
-      - name: copy plugin content to platform
-        run: |
-          cp -Rav ${{ env.TEST_PLUGIN_LOCAL_DIR }}/plugins/${{ env.TEST_PLUGIN_NAME }} ${{ steps.pull-platform.outputs.platform-content-dir }}/plugins/
-      - name: Test plugin dep install
-        working-directory: ${{ steps.pull-platform.outputs.platform-content-dir }}
-        run: |
-          yarn workspace ${{ env.TEST_PLUGIN_NS }}/${{ env.TEST_PLUGIN_NAME }} \
-            install \
-            --frozen-lockfile \
-            --production
-      - name: export dynamic plugin
-        working-directory: ${{ steps.pull-platform.outputs.platform-content-dir }}/plugins/${{ env.TEST_PLUGIN_NAME }}
-        run: |
-          npx janus-cli package export-dynamic-plugin
-      - name: publish dynamic plugin
-        working-directory: ${{ steps.pull-platform.outputs.platform-content-dir }}/plugins/${{ env.TEST_PLUGIN_NAME }}/dist-dynamic
-        run: |
-          echo '@dcurran90:registry=https://npm.pkg.github.com' > .npmrc
-          npm publish
+          release: 'RHDH'
+          # namespace: 'default'
+          chart: 'openshift-helm-charts/redhat-developer-hub'
+          token: '${{ github.token }}'
+          values: |
+            name: foobar
+          value-files: >-
+          [
+            "rdhd-helm-values.yaml", 
+            "values.production.yaml"
+          ]
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
+          KUBECONFIG_FILE: '${{ secrets.KUBE_CONFIG }}'
+
+
+
+      # - name: pull relevant platform
+      #   id: pull-platform
+      #   uses: komish/dh-plugin-workflow-hackery/.github/actions/pull-platform@main
+      #   with:
+      #     token: ${{ github.token }}
+      # - name: setup node
+      #   uses: actions/setup-node@v4
+      #   with:
+      #     node-version-file: 'platform/.nvmrc'
+      # - name: install platform deps
+      #   working-directory: ${{ steps.pull-platform.outputs.platform-content-dir }}
+      #   run: |
+      #     yarn install \
+      #       --frozen-lockfile
+      # - name: pull plugin repo
+      #   uses: actions/checkout@v4
+      #   with:
+      #     repository: ${{ env.TEST_PLUGIN_REPO }}
+      #     ref: ${{ env.TEST_PLUGIN_REPO_REF }}
+      #     path: ${{ env.TEST_PLUGIN_LOCAL_DIR }}
+      # - name: copy plugin content to platform
+      #   run: |
+      #     cp -Rav ${{ env.TEST_PLUGIN_LOCAL_DIR }}/plugins/${{ env.TEST_PLUGIN_NAME }} ${{ steps.pull-platform.outputs.platform-content-dir }}/plugins/
+      # - name: Test plugin dep install
+      #   working-directory: ${{ steps.pull-platform.outputs.platform-content-dir }}
+      #   run: |
+      #     yarn workspace ${{ env.TEST_PLUGIN_NS }}/${{ env.TEST_PLUGIN_NAME }} \
+      #       install \
+      #       --frozen-lockfile \
+      #       --production
+      # - name: export dynamic plugin
+      #   working-directory: ${{ steps.pull-platform.outputs.platform-content-dir }}/plugins/${{ env.TEST_PLUGIN_NAME }}
+      #   run: |
+      #     npx janus-cli package export-dynamic-plugin
+      # - name: publish dynamic plugin
+      #   working-directory: ${{ steps.pull-platform.outputs.platform-content-dir }}/plugins/${{ env.TEST_PLUGIN_NAME }}/dist-dynamic
+      #   run: |
+      #     echo '@dcurran90:registry=https://npm.pkg.github.com' > .npmrc
+      #     npm publish
+      #   env:
+      #     NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
 
 
 
