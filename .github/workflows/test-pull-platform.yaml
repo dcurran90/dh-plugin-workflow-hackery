@@ -54,27 +54,27 @@ jobs:
 
 
 
-      # - name: run helm install
-      #   run: helm list
-      #   env:
-      #     KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
-
-      - name: 'Deploy'
-        uses: 'deliverybot/helm@v1'
-        with:
-          release: 'RHDH'
-          # namespace: 'default'
-          chart: 'openshift-helm-charts/redhat-developer-hub'
-          token: '${{ github.token }}'
-          values: |
-            name: foobar
-          value-files: >-
-            [
-              "rdhd-helm-values.yaml", 
-              "values.production.yaml"
-            ]
+      - name: run helm install
+        run: helm list
         env:
-          KUBECONFIG_FILE: '${{ secrets.KUBE_CONFIG }}'
+          KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+
+      # - name: 'Deploy'
+      #   uses: 'deliverybot/helm@v1'
+      #   with:
+      #     release: 'RHDH'
+      #     # namespace: 'default'
+      #     chart: 'openshift-helm-charts/redhat-developer-hub'
+      #     token: '${{ github.token }}'
+      #     values: |
+      #       name: foobar
+      #     value-files: >-
+      #       [
+      #         "rdhd-helm-values.yaml", 
+      #         "values.production.yaml"
+      #       ]
+      #   env:
+      #     KUBECONFIG_FILE: '${{ secrets.KUBE_CONFIG }}'
 
 
 
