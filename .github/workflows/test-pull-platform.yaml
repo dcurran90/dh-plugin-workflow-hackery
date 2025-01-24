@@ -62,10 +62,10 @@ jobs:
           values: |
             name: foobar
           value-files: >-
-          [
-            "rdhd-helm-values.yaml", 
-            "values.production.yaml"
-          ]
+            [
+              "rdhd-helm-values.yaml", 
+              "values.production.yaml"
+            ]
         env:
           KUBECONFIG_FILE: '${{ secrets.KUBE_CONFIG }}'
 
