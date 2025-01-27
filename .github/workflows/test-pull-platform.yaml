@@ -57,7 +57,7 @@ jobs:
       - name: run helm install
         run: mkdir ~/.kube; echo "$KUBECONFIG" | base64  -d > ~/.kube/config; helm list
         env:
-          KUBECONFIG: ${{ secrets.KUBE_CONFIG }}
+          KUBECONFIG: ~/.kube/config
 
       # - name: 'Deploy'
       #   uses: 'deliverybot/helm@v1'
