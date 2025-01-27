@@ -55,7 +55,7 @@ jobs:
 
 
       - name: run helm install
-        run: mkdir ~/.kube; printf "$KUBECONFIG" >> ~/.kube/config; helm list
+        run: mkdir ~/.kube; echo "$KUBECONFIG" >> ~/.kube/config; helm list
         env:
           KUBECONFIG: ${{ secrets.KUBE_CONFIG }}
 
