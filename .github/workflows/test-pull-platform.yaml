@@ -55,27 +55,27 @@ jobs:
 
 
       - name: run helm install
-        run: mkdir /opt/.kube; echo "$KUBESECRET" | base64  -d > /opt/.kube/config; cat /opt/.kube/config; helm --kubeconfig /opt/.kube/config list
+        run: mkdir /opt/.kube; echo "$KUBESECRET" | base64  -d > /opt/.kube/config; helm --kubeconfig /opt/.kube/config list
         env:
           KUBESECRET: ${{ secrets.KUBE_CONFIG }}
           KUBECONFIG: ~/.kube/config
 
-      # - name: 'Deploy'
-      #   uses: 'deliverybot/helm@v1'
-      #   with:
-      #     release: 'RHDH'
-      #     # namespace: 'default'
-      #     chart: 'openshift-helm-charts/redhat-developer-hub'
-      #     token: '${{ github.token }}'
-      #     values: |
-      #       name: foobar
-      #     value-files: >-
-      #       [
-      #         "rdhd-helm-values.yaml", 
-      #         "values.production.yaml"
-      #       ]
-      #   env:
-      #     KUBECONFIG_FILE: '${{ secrets.KUBE_CONFIG }}'
+      - name: 'Deploy'
+        uses: 'deliverybot/helm@v1'
+        with:
+          release: 'RHDH'
+          # namespace: 'default'
+          chart: 'openshift-helm-charts/redhat-developer-hub'
+          token: '${{ github.token }}'
+          values: |
+            name: foobar
+          value-files: >-
+            [
+              "rdhd-helm-values.yaml", 
+              "values.production.yaml"
+            ]
+        env:
+          KUBECONFIG_FILE: '/opt/.kube/config'
 
 
 
