@@ -60,7 +60,7 @@ jobs:
           KUBESECRET: ${{ secrets.KUBE_CONFIG }}
 
       - name: run helm install
-        run: pwd; ls
+        run: pwd; ls ..
         #helm repo add openshift-helm-charts https://charts.openshift.io/; helm install redhat-developer-hub -f rhdh-helm-values.yaml openshift-helm-charts/redhat-developer-hub
         
 
