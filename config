@@ -7,10 +7,15 @@ clusters:
 contexts:
 - context:
     cluster: api-dancurran-lab2025-opdev-io:6443
+    namespace: danspace
+    user: kube:admin/api-dancurran-lab2025-opdev-io:6443
+  name: danspace/api-dancurran-lab2025-opdev-io:6443/kube:admin
+- context:
+    cluster: api-dancurran-lab2025-opdev-io:6443
     namespace: default
     user: kube:admin/api-dancurran-lab2025-opdev-io:6443
   name: default/api-dancurran-lab2025-opdev-io:6443/kube:admin
-current-context: default/api-dancurran-lab2025-opdev-io:6443/kube:admin
+current-context: danspace/api-dancurran-lab2025-opdev-io:6443/kube:admin
 kind: Config
 preferences: {}
 users:
